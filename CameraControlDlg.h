@@ -46,6 +46,7 @@ private:
 public:
 	CCameraControlDlg(CWnd* pParent = NULL);	// standard constructor
 	void setCameraController(CameraController* controller){_controller = controller;}
+	bool isValidMoveXInput(int &data);
 
 
 public:
@@ -55,7 +56,9 @@ public:
 	//Dialog data
 	enum { IDD = IDD_CAMERACONTROL_DIALOG };
 	
+	CActionButton	_btnMove2X;
 	CActionButton	_btnSend2Arduino;
+
 	CActionButton	_btnTakePicture;
 	CActionButton	_btnStartEVF;
 	CActionButton	_btnEndEVF;
@@ -73,6 +76,10 @@ public:
 	CEvfZoomButton	_btnZoomZoom;
 	CProgressCtrl	_progress;
 	CEdit			_edit;
+
+	CEdit			_edit2;
+	CEdit			_edit3;
+
 	CEVFPictureBox	_pictureBox;
 	CAEMode			_comboAEMode;
 	CTv				_comboTv;
@@ -103,8 +110,14 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 protected:
+	virtual void OnOK();
+
+protected:
 	CameraController* _controller;
 
 public:
 	afx_msg void OnClose();
+	afx_msg void OnBnClickedButton24();
+	afx_msg void OnEnChangeEdit2();
+	afx_msg void OnEnChangeEdit3();
 };

@@ -69,7 +69,7 @@ public:
 			//printing the output
 			puts(output);
 			//freeing c_string memory
-			//delete[] c_string;
+			delete[] c_string;
 		}
 
 		return true;

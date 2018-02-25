@@ -46,6 +46,9 @@ void CCameraControlDlg::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 	
 	DDX_Control(pDX, IDC_BUTTON19, _btnSend2Arduino);
+	DDX_Control(pDX, IDC_EDIT2, _edit2);
+	DDX_Control(pDX, IDC_EDIT3, _edit3);
+	DDX_Control(pDX, IDC_BUTTON24, _btnMove2X);
 
 	DDX_Control(pDX, IDC_BUTTON1, _btnTakePicture);
 	DDX_Control(pDX, IDC_PROGRESS1, _progress);
@@ -84,6 +87,9 @@ BEGIN_MESSAGE_MAP(CCameraControlDlg, CDialog)
 	ON_MESSAGE(WM_USER_DOWNLOAD_COMPLETE, OnDownloadComplete)
 	ON_MESSAGE(WM_USER_PROGRESS_REPORT, OnProgressReport)
 	ON_WM_CLOSE()
+	ON_BN_CLICKED(IDC_BUTTON24, &CCameraControlDlg::OnBnClickedButton24)
+	ON_EN_CHANGE(IDC_EDIT2, &CCameraControlDlg::OnEnChangeEdit2)
+	ON_EN_CHANGE(IDC_EDIT3, &CCameraControlDlg::OnEnChangeEdit3)
 END_MESSAGE_MAP()
 
 
@@ -127,6 +133,9 @@ void CCameraControlDlg::setupListener(ActionListener* listener)
 
 	_btnSend2Arduino.setActionCommand("Send2Arduino");
 	_btnSend2Arduino.addActionListener(listener);
+
+	_btnMove2X.setActionCommand("Move2X");
+	_btnMove2X.addActionListener(listener);
 
 	_btnTakePicture.setActionCommand("TakePicture");
 	_btnTakePicture.addActionListener(listener);
@@ -193,6 +202,10 @@ void CCameraControlDlg::OnClose()
 	// TODO : The control notification handler code is added here or Predetermined processing is called. 
 	fireEvent("closing");
 	_btnSend2Arduino.EnableWindow(FALSE);
+	_btnMove2X.EnableWindow(FALSE);
+	_edit2.EnableWindow(FALSE);
+	_edit3.EnableWindow(FALSE);
+
 	_btnTakePicture.EnableWindow(FALSE);	
 	_progress.EnableWindow(FALSE);
 	_edit.EnableWindow(FALSE);
@@ -252,3 +265,75 @@ LRESULT CCameraControlDlg::OnProgressReport(WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
+
+
+void CCameraControlDlg::OnBnClickedButton24()
+{
+	// TODO: Add your control notification handler code here
+
+}
+
+
+void CCameraControlDlg::OnEnChangeEdit2()
+{
+	// TODO:  If this is a RICHEDIT control, the control will not
+	// send this notification unless you override the __super::OnInitDialog()
+	// function and call CRichEditCtrl().SetEventMask()
+	// with the ENM_CHANGE flag ORed into the mask.
+
+	// TODO:  Add your control notification handler code here
+}
+
+
+void CCameraControlDlg::OnEnChangeEdit3()
+{
+	// TODO:  If this is a RICHEDIT control, the control will not
+	// send this notification unless you override the __super::OnInitDialog()
+	// function and call CRichEditCtrl().SetEventMask()
+	// with the ENM_CHANGE flag ORed into the mask.
+
+	// TODO:  Add your control notification handler code here
+	CString text;
+	_edit3.GetWindowText(text);
+
+	//TODO:
+	//If isValid update message
+}
+
+
+void CCameraControlDlg::OnOK()
+{
+	if (GetFocus() == &_edit3)
+	{
+		// TODO: Add your handling of the Return key here.
+		TRACE0("Return key in edit control pressed\n");
+		//If ValidInput call Move2X
+		CString text;
+		_edit3.GetWindowText(text);
+		
+		// Convert a TCHAR string to a LPCSTR
+		CT2CA pszConvertedAnsiString(text);
+		// construct a std::string using the LPCSTR input
+		std::string posDataString(pszConvertedAnsiString);
+
+		std::string::size_type sz;   // alias of size_t
+		int *posDataInt = new int;
+		*posDataInt = std::stoi(posDataString, &sz);
+
+		if (isValidMoveXInput(*posDataInt))
+		{
+			_btnMove2X.fireEvent(posDataInt);
+		}
+		delete posDataInt;
+		// Call `return` to leave the dialog open.
+		return;
+	}
+
+	// Default behavior: Close the dialog.
+	CDialog::OnOK();
+}
+
+bool CCameraControlDlg::isValidMoveXInput(int &data)
+{
+	return true;
+}

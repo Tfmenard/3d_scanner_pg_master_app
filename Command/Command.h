@@ -23,7 +23,8 @@ class Command {
 protected:
 	// Camera Model
 	CameraModel* _model;
-
+public:
+	Command(void) {}
 public:
 	Command(CameraModel *model) : _model(model) {}
 

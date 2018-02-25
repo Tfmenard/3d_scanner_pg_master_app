@@ -42,6 +42,7 @@
 #include "DoEvfAFCommand.h"
 
 #include "StartSerial2ArduinoCommand.h"
+#include "MotorXCommand.h"
 
 class CameraController : public ActionListener
 {
@@ -82,7 +83,14 @@ public:
 
 		if (command == "Send2Arduino")
 		{
-			StoreAsync(new StartSerial2ArduinoCommand(_model));
+			StoreAsync(new MotorXCommand(30, 5));
+		}
+
+		if (command == "Move2X")
+		{
+
+			int* pos2Go = (int*) event.getArg();
+			StoreAsync(new MotorXCommand(pos2Go, 5));
 		}
 
 		if ( command == "opensession" )
