@@ -47,6 +47,7 @@ public:
 	CCameraControlDlg(CWnd* pParent = NULL);	// standard constructor
 	void setCameraController(CameraController* controller){_controller = controller;}
 	bool isValidMoveXInput(int &data);
+	void AddData(CListCtrl &ctrl, int row, int col, const char *str);
 
 
 public:
@@ -79,6 +80,8 @@ public:
 
 	CEdit			_edit2;
 	CEdit			_edit3;
+
+	CListCtrl		_rowList;
 
 	CEVFPictureBox	_pictureBox;
 	CAEMode			_comboAEMode;

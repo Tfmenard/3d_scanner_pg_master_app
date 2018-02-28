@@ -49,6 +49,19 @@ void CCameraControlDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT2, _edit2);
 	DDX_Control(pDX, IDC_EDIT3, _edit3);
 	DDX_Control(pDX, IDC_BUTTON24, _btnMove2X);
+	DDX_Control(pDX, IDC_LIST2, _rowList);
+	_rowList.InsertColumn(0, "Number of shots");
+	_rowList.SetColumnWidth(1, 80);
+
+	_rowList.InsertColumn(1, "X position");
+	_rowList.SetColumnWidth(1, 80);
+	AddData(_rowList, 0, 0, "00");
+	AddData(_rowList, 0, 1, "01");
+	AddData(_rowList, 1, 0, "10");
+	AddData(_rowList, 1, 1, "11");
+	_rowList.SendMessage(LVM_SETEXTENDEDLISTVIEWSTYLE, 0,
+
+		LVS_EX_FULLROWSELECT);
 
 	DDX_Control(pDX, IDC_BUTTON1, _btnTakePicture);
 	DDX_Control(pDX, IDC_PROGRESS1, _progress);
@@ -296,6 +309,10 @@ void CCameraControlDlg::OnEnChangeEdit3()
 	CString text;
 	_edit3.GetWindowText(text);
 
+	// Convert a TCHAR string to a LPCSTR
+	CT2CA pszConvertedAnsiString(text);
+	_edit2.SetWindowTextA(text);
+
 	//TODO:
 	//If isValid update message
 }
@@ -336,4 +353,28 @@ void CCameraControlDlg::OnOK()
 bool CCameraControlDlg::isValidMoveXInput(int &data)
 {
 	return true;
+}
+
+void CCameraControlDlg::AddData(CListCtrl &ctrl, int row, int col, const char *str)
+
+{
+
+	LVITEM lv;
+
+	lv.iItem = row;
+
+	lv.iSubItem = col;
+
+	lv.pszText = (LPSTR)str;
+
+	lv.mask = LVIF_TEXT;
+
+	if (col == 0)
+
+		ctrl.InsertItem(&lv);
+
+	else
+
+		ctrl.SetItem(&lv);
+
 }
