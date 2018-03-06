@@ -12,7 +12,6 @@
 *   Copyright Canon Inc. 2006-2008 All Rights Reserved                        *
 *                                                                             *
 *******************************************************************************/
-
 #pragma once
 
 #include "EDSDK.h"
@@ -43,6 +42,7 @@
 
 #include "StartSerial2ArduinoCommand.h"
 #include "MotorXCommand.h"
+//#include "CameraControlDlg.h"
 
 class CameraController : public ActionListener
 {
@@ -53,6 +53,9 @@ protected:
 	
 	// Command processing
 	Processor _processor;
+
+	//Row Dialog
+	//RowDlg rowDlg;
 
 public:
 	// Constructor
@@ -91,6 +94,11 @@ public:
 
 			int* pos2Go = (int*) event.getArg();
 			StoreAsync(new MotorXCommand(pos2Go, 5));
+		}
+
+		if (command == "AddRow")
+		{
+			//CCameraControlDlg::AddRow();
 		}
 
 		if ( command == "opensession" )

@@ -12,8 +12,8 @@ public:
 
 	virtual bool execute()
 	{
-		char *command_string;
-		command_string = buildCmdString(&cmd_stream, _target_position, _speed, &_motor_id);
+		//char *command_string;
+		//command_string = buildCmdString(&cmd_stream, _target_position, _speed, &_motor_id);
 		//Override
 		SerialPort arduino(XW_arduino_port);
 

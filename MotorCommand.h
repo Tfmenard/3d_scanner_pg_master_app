@@ -23,7 +23,7 @@ class MotorCommand : public Command
 
 		//Default port for arduinos on Windows
 		char *YB_arduino_port = "\\\\.\\COM11";
-		char *XW_arduino_port = "\\\\.\\COM10";
+		char *XW_arduino_port = "\\\\.\\COM13";
 
 		//List of possible motor ids
 		struct id_enum
@@ -49,7 +49,7 @@ class MotorCommand : public Command
 
 	private:
 		//Cmd identifier for DC motors
-		char *cmd_identifier = "DC";
+		char *cmd_identifier = "M";
 
 
 	public:
@@ -80,8 +80,9 @@ class MotorCommand : public Command
 			*cmd_stream_ptr << *motor_id_ptr;
 			*cmd_stream_ptr << ",";
 			*cmd_stream_ptr << position;
-			*cmd_stream_ptr << ",";
-			*cmd_stream_ptr << speed;
+			*cmd_stream_ptr << '\n';
+			//*cmd_stream_ptr << ",";
+			//*cmd_stream_ptr << speed;
 
 			//Convert to stringstream to string
 			string tmp_string = cmd_stream_ptr->str();

@@ -17,7 +17,9 @@
 
 #include <map>
 #include "Observer.h"
+
 #include "CameraController.h"
+
 
 
 #include "AEMode.h"
@@ -32,6 +34,12 @@
 
 #include "ActionButton.h"
 #include "EvfZoomButton.h"
+
+#include "ActionListener.h"
+#include "ActionEvent.h"
+
+#include "RowDlg.h"
+
 
 // CCameraControlDlg Dialog
 class CCameraControlDlg : public CDialog, public ActionSource, public Observer
@@ -48,6 +56,8 @@ public:
 	void setCameraController(CameraController* controller){_controller = controller;}
 	bool isValidMoveXInput(int &data);
 	void AddData(CListCtrl &ctrl, int row, int col, const char *str);
+	void AddRow();
+	char* Int2CharPtr(int integer);
 
 
 public:
@@ -59,6 +69,8 @@ public:
 	
 	CActionButton	_btnMove2X;
 	CActionButton	_btnSend2Arduino;
+	CButton	_btnAddRow;
+	CActionButton	_btnPopulateNewRow;
 
 	CActionButton	_btnTakePicture;
 	CActionButton	_btnStartEVF;
@@ -118,9 +130,12 @@ protected:
 protected:
 	CameraController* _controller;
 
+	RowDlg* _rowDlg;
+
 public:
 	afx_msg void OnClose();
 	afx_msg void OnBnClickedButton24();
 	afx_msg void OnEnChangeEdit2();
 	afx_msg void OnEnChangeEdit3();
+	afx_msg void OnBnClickedButton23();
 };

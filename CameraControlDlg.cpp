@@ -49,19 +49,36 @@ void CCameraControlDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT2, _edit2);
 	DDX_Control(pDX, IDC_EDIT3, _edit3);
 	DDX_Control(pDX, IDC_BUTTON24, _btnMove2X);
+	DDX_Control(pDX, IDC_BUTTON23, _btnAddRow);
 	DDX_Control(pDX, IDC_LIST2, _rowList);
+
 	_rowList.InsertColumn(0, "Number of shots");
+	_rowList.SetColumnWidth(0, 60);
+
+	_rowList.InsertColumn(1, "Tv");
 	_rowList.SetColumnWidth(1, 80);
 
-	_rowList.InsertColumn(1, "X position");
-	_rowList.SetColumnWidth(1, 80);
-	AddData(_rowList, 0, 0, "00");
-	AddData(_rowList, 0, 1, "01");
-	AddData(_rowList, 1, 0, "10");
-	AddData(_rowList, 1, 1, "11");
-	_rowList.SendMessage(LVM_SETEXTENDEDLISTVIEWSTYLE, 0,
+	_rowList.InsertColumn(2, "Av");
+	_rowList.SetColumnWidth(2, 100);
 
-		LVS_EX_FULLROWSELECT);
+	_rowList.InsertColumn(3, "ISO");
+	_rowList.SetColumnWidth(3, 120);
+
+	_rowList.InsertColumn(4, "X position");
+	_rowList.SetColumnWidth(4, 140);
+
+	_rowList.InsertColumn(5, "Y position");
+	_rowList.SetColumnWidth(5, 160);
+
+	_rowList.InsertColumn(6, "Tilt Angle");
+	_rowList.SetColumnWidth(6, 180);
+
+	
+	//AddData(_rowList, 0, 0, "00");
+	//AddData(_rowList, 0, 1, "01");
+	//AddData(_rowList, 1, 0, "10");
+	//AddData(_rowList, 1, 1, "11");
+	_rowList.SendMessage(LVM_SETEXTENDEDLISTVIEWSTYLE, 0, LVS_EX_FULLROWSELECT);
 
 	DDX_Control(pDX, IDC_BUTTON1, _btnTakePicture);
 	DDX_Control(pDX, IDC_PROGRESS1, _progress);
@@ -103,6 +120,7 @@ BEGIN_MESSAGE_MAP(CCameraControlDlg, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON24, &CCameraControlDlg::OnBnClickedButton24)
 	ON_EN_CHANGE(IDC_EDIT2, &CCameraControlDlg::OnEnChangeEdit2)
 	ON_EN_CHANGE(IDC_EDIT3, &CCameraControlDlg::OnEnChangeEdit3)
+	ON_BN_CLICKED(IDC_BUTTON23, &CCameraControlDlg::OnBnClickedButton23)
 END_MESSAGE_MAP()
 
 
@@ -123,6 +141,7 @@ BOOL CCameraControlDlg::OnInitDialog()
 	
 	return TRUE;   // return TRUE  unless you set the focus to a control
 }
+
 
 void CCameraControlDlg::setupListener(ActionListener* listener)
 {
@@ -149,6 +168,11 @@ void CCameraControlDlg::setupListener(ActionListener* listener)
 
 	_btnMove2X.setActionCommand("Move2X");
 	_btnMove2X.addActionListener(listener);
+
+	//_btnAddRow.setActionCommand("AddRow");
+	//_btnAddRow.addActionListener(listener);
+
+
 
 	_btnTakePicture.setActionCommand("TakePicture");
 	_btnTakePicture.addActionListener(listener);
@@ -208,6 +232,7 @@ void CCameraControlDlg::setupObserver(Observable* ob)
 	ob->addObserver(static_cast<Observer*>(&_pictureBox));
 	ob->addObserver(static_cast<Observer*>(&_comboEvfAFMode));
 	ob->addObserver(static_cast<Observer*>(&_btnZoomZoom));
+
 }
 
 void CCameraControlDlg::OnClose()
@@ -262,6 +287,7 @@ void CCameraControlDlg::update(Observable* from, CameraEvent *e)
 	{
 		::PostMessage(this->m_hWnd, WM_CLOSE, 0, NULL);
 	}
+
 }
 
 
@@ -368,13 +394,82 @@ void CCameraControlDlg::AddData(CListCtrl &ctrl, int row, int col, const char *s
 	lv.pszText = (LPSTR)str;
 
 	lv.mask = LVIF_TEXT;
-
+	//ctrl.InsertItem(&lv);
 	if (col == 0)
-
+	{
 		ctrl.InsertItem(&lv);
-
+	}
 	else
-
+	{
 		ctrl.SetItem(&lv);
+	}
+}
 
+
+void CCameraControlDlg::AddRow()
+{
+	int num_of_rows = _rowList.GetItemCount();
+	int new_row_num = num_of_rows + 1;
+
+	AddData(_rowList, 0, 0, "00");
+
+	//Tv Data
+	CString TvData;
+	//Read current camera settings
+	int currShutterSpeed = _comboTv.GetCurSel();
+	if (currShutterSpeed != LB_ERR)
+	{
+		_comboTv.GetLBText(currShutterSpeed, TvData);
+	}
+	//Print row
+	AddData(_rowList, 0, 1, TvData);
+
+	//Av Data
+	CString AvData;
+	//Read current camera settings
+	int currApperture = _comboAv.GetCurSel();
+	if (currApperture != LB_ERR)
+	{
+		_comboTv.GetLBText(currApperture, AvData);
+	}
+	//Print row
+	AddData(_rowList, 0, 2, AvData);
+
+
+	//ISO Data
+	CString IsoData;
+	//Read current camera settings
+	int currIso = _comboIso.GetCurSel();
+	if (currIso != LB_ERR)
+	{
+		_comboTv.GetLBText(currIso, IsoData);
+	}
+	//Print row
+	AddData(_rowList, 0, 3, IsoData);
+}
+
+
+void CCameraControlDlg::OnBnClickedButton23()
+{
+	// TODO: Add your control notification handler code here
+	AddRow();
+}
+
+
+char* CCameraControlDlg::Int2CharPtr(int integer)
+{
+	stringstream cmd_stream_ptr;
+	//Build command as stringstream
+	cmd_stream_ptr << integer;
+
+	//Convert to stringstream to string
+	string tmp_string = cmd_stream_ptr.str();
+
+	//Initiate cmd_string member variable
+	char *char_string = new char[tmp_string.length()];
+
+	// Copying the contents of tmp_string to char array cmd_string
+	strcpy(char_string, tmp_string.c_str());
+
+	return char_string;
 }
