@@ -225,6 +225,7 @@
     <ClCompile Include="PropertyComboBox.cpp" />
     <ClCompile Include="RowDlg.cpp" />
     <ClCompile Include="SerialPort.cpp" />
+    <ClCompile Include="Shot.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -284,6 +285,7 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="RowDlg.h" />
     <ClInclude Include="SerialPort.h" />
+    <ClInclude Include="Shot.h" />
     <ClInclude Include="StartSerial2ArduinoCommand.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Tv.h" />

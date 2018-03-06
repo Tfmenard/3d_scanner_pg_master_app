@@ -23,6 +23,8 @@
 #include "EDSDK.h"
 #include "EDSDKTypes.h"
 
+#include "Shot.h"
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -409,9 +411,15 @@ void CCameraControlDlg::AddData(CListCtrl &ctrl, int row, int col, const char *s
 void CCameraControlDlg::AddRow()
 {
 	int num_of_rows = _rowList.GetItemCount();
-	int new_row_num = num_of_rows + 1;
+	int new_row_num = 0;
+	
+	if (num_of_rows != 0)
+	{
+		new_row_num = num_of_rows + 1;
+	}
+	
 
-	AddData(_rowList, 0, 0, "00");
+	AddData(_rowList, new_row_num, 0, "00");
 
 	//Tv Data
 	CString TvData;
@@ -422,7 +430,8 @@ void CCameraControlDlg::AddRow()
 		_comboTv.GetLBText(currShutterSpeed, TvData);
 	}
 	//Print row
-	AddData(_rowList, 0, 1, TvData);
+	AddData(_rowList, new_row_num, 1, TvData);
+
 
 	//Av Data
 	CString AvData;
@@ -433,7 +442,7 @@ void CCameraControlDlg::AddRow()
 		_comboTv.GetLBText(currApperture, AvData);
 	}
 	//Print row
-	AddData(_rowList, 0, 2, AvData);
+	AddData(_rowList, new_row_num, 2, AvData);
 
 
 	//ISO Data
@@ -442,10 +451,31 @@ void CCameraControlDlg::AddRow()
 	int currIso = _comboIso.GetCurSel();
 	if (currIso != LB_ERR)
 	{
-		_comboTv.GetLBText(currIso, IsoData);
+		_comboIso.GetLBText(currIso, IsoData);
 	}
 	//Print row
-	AddData(_rowList, 0, 3, IsoData);
+	AddData(_rowList, new_row_num, 3, IsoData);
+
+
+	//Get X position
+	CString xPositionString;
+	_edit2.GetWindowText(xPositionString);
+
+	//Print row
+	AddData(_rowList, new_row_num, 4, xPositionString);
+
+	int xPositionInt = CString2Int(xPositionString);
+
+	Shot *newShot = new Shot(
+		_comboTv.GetItemData(currShutterSpeed), 
+		_comboAv.GetItemData(currShutterSpeed),
+		_comboIso.GetItemData(currShutterSpeed),
+		xPositionInt,
+		3,
+		3,
+		3
+	
+	);
 }
 
 
@@ -472,4 +502,17 @@ char* CCameraControlDlg::Int2CharPtr(int integer)
 	strcpy(char_string, tmp_string.c_str());
 
 	return char_string;
+}
+
+int CCameraControlDlg::CString2Int(CString string)
+{
+	// Convert a TCHAR string to a LPCSTR
+	CT2CA pszConvertedAnsiString(string);
+	// construct a std::string using the LPCSTR input
+	std::string posDataString(pszConvertedAnsiString);
+
+	std::string::size_type sz;   // alias of size_t
+	int dataInt =  std::stoi(posDataString, &sz);
+
+	return dataInt;
 }

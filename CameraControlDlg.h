@@ -58,6 +58,7 @@ public:
 	void AddData(CListCtrl &ctrl, int row, int col, const char *str);
 	void AddRow();
 	char* Int2CharPtr(int integer);
+	int CString2Int(CString string);
 
 
 public:

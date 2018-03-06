@@ -49,7 +49,7 @@ class CameraController : public ActionListener
 
 protected:
 	// Camera model
-	CameraModel* _model;
+	//CameraModel* _model;
 	
 	// Command processing
 	Processor _processor;
@@ -58,6 +58,9 @@ protected:
 	//RowDlg rowDlg;
 
 public:
+	// Camera model
+	CameraModel * _model;
+
 	// Constructor
 	CameraController(): _model(){}
 
