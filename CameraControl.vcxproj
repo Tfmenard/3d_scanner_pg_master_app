@@ -223,6 +223,7 @@
     <ClCompile Include="MotorCommand.cpp" />
     <ClCompile Include="MotorXCommand.cpp" />
     <ClCompile Include="PropertyComboBox.cpp" />
+    <ClCompile Include="RowDlg.cpp" />
     <ClCompile Include="SerialPort.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -281,6 +282,7 @@
     <ClInclude Include="MotorXCommand.h" />
     <ClInclude Include="PropertyComboBox.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="RowDlg.h" />
     <ClInclude Include="SerialPort.h" />
     <ClInclude Include="StartSerial2ArduinoCommand.h" />
     <ClInclude Include="stdafx.h" />

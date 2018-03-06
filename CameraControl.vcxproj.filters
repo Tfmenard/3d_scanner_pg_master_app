@@ -84,6 +84,9 @@
     <ClCompile Include="MotorXCommand.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="RowDlg.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ActionButton.h">
@@ -240,6 +243,9 @@
       <Filter>headers</Filter>
     </ClInclude>
     <ClInclude Include="MotorXCommand.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="RowDlg.h">
       <Filter>headers</Filter>
     </ClInclude>
   </ItemGroup>
