@@ -44,7 +44,9 @@
 #define IDC_EDIT2                       1035
 #define IDC_BUTTON24                    1036
 #define IDC_EDIT3                       1037
+#define IDC_EDIT4                       1038
 #define IDC_LIST1                       1039
+#define IDC_BUTTON25                    1039
 #define IDC_LIST2                       1040
 #define IDC_MFCVSLISTBOX1               1046
 #define IDC_MFCSHELLLIST1               1047

@@ -90,6 +90,9 @@
     <ClCompile Include="Shot.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="ScanJob.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ActionButton.h">
@@ -252,6 +255,9 @@
       <Filter>headers</Filter>
     </ClInclude>
     <ClInclude Include="Shot.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ScanJob.h">
       <Filter>headers</Filter>
     </ClInclude>
   </ItemGroup>

@@ -35,6 +35,7 @@ public:
 			//Adding the delimiter
 			//c_string[input_string.size()] = '\n';
 
+			int command_string_length = strlen(command_string);
 			//Writing string to arduino
 			arduino.writeSerialPort(command_string, MAX_DATA_LENGTH);
 			//Getting reply from arduino

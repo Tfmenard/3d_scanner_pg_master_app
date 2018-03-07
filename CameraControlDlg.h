@@ -39,6 +39,7 @@
 #include "ActionEvent.h"
 
 #include "RowDlg.h"
+#include "ScanJob.h"
 
 
 // CCameraControlDlg Dialog
@@ -58,7 +59,7 @@ public:
 	void AddData(CListCtrl &ctrl, int row, int col, const char *str);
 	void AddRow();
 	char* Int2CharPtr(int integer);
-	int CString2Int(CString string);
+	int CString2Int(CString &string);
 
 
 public:
@@ -72,6 +73,9 @@ public:
 	CActionButton	_btnSend2Arduino;
 	CButton	_btnAddRow;
 	CActionButton	_btnPopulateNewRow;
+	CButton	_startJob;
+
+	ScanJob scanJob;
 
 	CActionButton	_btnTakePicture;
 	CActionButton	_btnStartEVF;
@@ -93,6 +97,7 @@ public:
 
 	CEdit			_edit2;
 	CEdit			_edit3;
+	CEdit			_edit4;
 
 	CListCtrl		_rowList;
 
@@ -139,4 +144,6 @@ public:
 	afx_msg void OnEnChangeEdit2();
 	afx_msg void OnEnChangeEdit3();
 	afx_msg void OnBnClickedButton23();
+	afx_msg void OnEnChangeEdit4();
+	afx_msg void OnBnClickedButton25();
 };

@@ -7,6 +7,8 @@
 #include "ActionListener.h"
 #include "ActionEvent.h"
 
+#include "ActionSource.h"
+
 #include "OpenSessionCommand.h"
 #include "CloseSessionCommand.h"
 #include "SaveSettingCommand.h"
@@ -29,7 +31,7 @@
 #include "StartSerial2ArduinoCommand.h"
 #include "MotorXCommand.h"
 
-class Shot
+class Shot: public ActionSource
 {
 
 public:
@@ -55,5 +57,13 @@ public:
 
 	Shot(DWORD_PTR _TvData, DWORD_PTR _AvData, DWORD_PTR _IsoData,
 		int _motorXPos, int _motorYPos, int _motorBAngle, int _servoTitleAngle);
+
+	Shot(DWORD_PTR _TvData, DWORD_PTR _AvData, DWORD_PTR _IsoData, int _motorXPos, int _motorYPos, int _motorBAngle, int _servoTiltAngle, ActionListener* listener);
+
+	void fireEventAv(DWORD_PTR *data);
+
+	void sendCommands();
+
+	void setupListener(ActionListener* listener);
 };
 

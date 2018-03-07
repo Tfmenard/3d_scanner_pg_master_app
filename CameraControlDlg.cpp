@@ -50,9 +50,12 @@ void CCameraControlDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON19, _btnSend2Arduino);
 	DDX_Control(pDX, IDC_EDIT2, _edit2);
 	DDX_Control(pDX, IDC_EDIT3, _edit3);
+	DDX_Control(pDX, IDC_EDIT4, _edit4);
 	DDX_Control(pDX, IDC_BUTTON24, _btnMove2X);
 	DDX_Control(pDX, IDC_BUTTON23, _btnAddRow);
+	DDX_Control(pDX, IDC_BUTTON25, _startJob);
 	DDX_Control(pDX, IDC_LIST2, _rowList);
+
 
 	_rowList.InsertColumn(0, "Number of shots");
 	_rowList.SetColumnWidth(0, 60);
@@ -123,6 +126,8 @@ BEGIN_MESSAGE_MAP(CCameraControlDlg, CDialog)
 	ON_EN_CHANGE(IDC_EDIT2, &CCameraControlDlg::OnEnChangeEdit2)
 	ON_EN_CHANGE(IDC_EDIT3, &CCameraControlDlg::OnEnChangeEdit3)
 	ON_BN_CLICKED(IDC_BUTTON23, &CCameraControlDlg::OnBnClickedButton23)
+	ON_EN_CHANGE(IDC_EDIT4, &CCameraControlDlg::OnEnChangeEdit4)
+	ON_BN_CLICKED(IDC_BUTTON25, &CCameraControlDlg::OnBnClickedButton25)
 END_MESSAGE_MAP()
 
 
@@ -415,11 +420,26 @@ void CCameraControlDlg::AddRow()
 	
 	if (num_of_rows != 0)
 	{
-		new_row_num = num_of_rows + 1;
+		new_row_num = num_of_rows;
 	}
-	
 
-	AddData(_rowList, new_row_num, 0, "00");
+
+	//Num Of Shots Data
+	CString numOfShotsText;
+	_edit4.GetWindowText(numOfShotsText);
+	
+	// Convert a TCHAR string to a LPCSTR
+	CT2CA pszConvertedAnsiString(numOfShotsText);
+	// construct a std::string using the LPCSTR input
+	std::string numOfShotsString(pszConvertedAnsiString);
+
+	std::string::size_type sz;   // alias of size_t
+	int numOfShots = std::stoi(numOfShotsString, &sz);
+
+	AddData(_rowList, new_row_num, 0, numOfShotsText);
+
+
+
 
 	//Tv Data
 	CString TvData;
@@ -439,7 +459,7 @@ void CCameraControlDlg::AddRow()
 	int currApperture = _comboAv.GetCurSel();
 	if (currApperture != LB_ERR)
 	{
-		_comboTv.GetLBText(currApperture, AvData);
+		_comboAv.GetLBText(currApperture, AvData);
 	}
 	//Print row
 	AddData(_rowList, new_row_num, 2, AvData);
@@ -468,14 +488,32 @@ void CCameraControlDlg::AddRow()
 
 	Shot *newShot = new Shot(
 		_comboTv.GetItemData(currShutterSpeed), 
-		_comboAv.GetItemData(currShutterSpeed),
-		_comboIso.GetItemData(currShutterSpeed),
+		_comboAv.GetItemData(currApperture),
+		_comboIso.GetItemData(currIso),
 		xPositionInt,
 		3,
 		3,
 		3
 	
 	);
+
+	//Add Row data Scan Job
+	scanJob.addRow(
+		numOfShots, 
+		_comboTv.GetItemData(currShutterSpeed),
+		_comboAv.GetItemData(currApperture),
+		_comboIso.GetItemData(currIso),
+		xPositionInt,
+		3,
+		3,
+		_controller
+	);
+	
+	//FireEvent test
+
+	//newShot->setupListener(_controller);
+	//DWORD_PTR AvData_DWORD = _comboAv.GetItemData(currApperture +1);
+	//newShot->fireEventAv(&AvData_DWORD);
 }
 
 
@@ -504,7 +542,7 @@ char* CCameraControlDlg::Int2CharPtr(int integer)
 	return char_string;
 }
 
-int CCameraControlDlg::CString2Int(CString string)
+int CCameraControlDlg::CString2Int(CString &string)
 {
 	// Convert a TCHAR string to a LPCSTR
 	CT2CA pszConvertedAnsiString(string);
@@ -515,4 +553,21 @@ int CCameraControlDlg::CString2Int(CString string)
 	int dataInt =  std::stoi(posDataString, &sz);
 
 	return dataInt;
+}
+
+void CCameraControlDlg::OnEnChangeEdit4()
+{
+	// TODO:  If this is a RICHEDIT control, the control will not
+	// send this notification unless you override the __super::OnInitDialog()
+	// function and call CRichEditCtrl().SetEventMask()
+	// with the ENM_CHANGE flag ORed into the mask.
+
+	// TODO:  Add your control notification handler code here
+}
+
+
+void CCameraControlDlg::OnBnClickedButton25()
+{
+	//Start scan job
+	scanJob.startJob();
 }
