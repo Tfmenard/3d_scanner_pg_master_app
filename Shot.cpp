@@ -39,5 +39,20 @@ void Shot::setupListener(ActionListener* listener)
 
 void Shot::sendCommands()
 {
-	int i = 0;
+	//Set Tv
+	fireEvent(TvCommand, &TvData);
+
+	//Set Av
+	fireEvent(AvCommand, &AvData);
+
+	//Set ISO
+	fireEvent(IsoCommand, &IsoData);
+
+	//Set X position
+	fireEvent(MotorXCommand, &motorXPos);
+
+	//TODO: Add other motor commands
+
+	fireEvent(TakePictureCommand);
+	
 }

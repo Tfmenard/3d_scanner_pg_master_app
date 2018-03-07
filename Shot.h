@@ -44,11 +44,16 @@ public:
 	DWORD_PTR IsoData;
 	LPCTSTR IsoCommand = "set_ISOSpeed";
 	
+	LPCTSTR TakePictureCommand = "TakePicture";
 
 	int motorXPos;
+	LPCTSTR MotorXCommand = "Move2X";
+
+	//TODO: Add other motor commands
 	int motorYPos;
 	int motorBAngle;
 	int servoTitleAngle;
+
 
 
 public:
