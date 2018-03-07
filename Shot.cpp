@@ -54,5 +54,7 @@ void Shot::sendCommands()
 	//TODO: Add other motor commands
 
 	fireEvent(TakePictureCommand);
+
+	Sleep(2000);
 	
 }

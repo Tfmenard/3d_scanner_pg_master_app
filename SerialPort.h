@@ -12,11 +12,12 @@
 class SerialPort
 {
 private:
+
+public:
 	HANDLE handler;
-	bool connected;
 	COMSTAT status;
 	DWORD errors;
-public:
+	bool connected;
 	SerialPort(char *portName);
 	~SerialPort();
 

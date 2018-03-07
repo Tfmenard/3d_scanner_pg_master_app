@@ -25,6 +25,7 @@ class MotorCommand : public Command
 		char *YB_arduino_port = "\\\\.\\COM11";
 		char *XW_arduino_port = "\\\\.\\COM13";
 
+
 		//List of possible motor ids
 		struct id_enum
 		{
@@ -86,6 +87,13 @@ class MotorCommand : public Command
 
 			//Convert to stringstream to string
 			string tmp_string = cmd_stream_ptr->str();
+
+			std::string segment;
+			std::vector<std::string> seglist;
+
+			getline(*cmd_stream_ptr, tmp_string, '\0');
+			seglist.push_back(tmp_string);
+
 
 			//Initiate cmd_string member variable
 			cmd_string = new char[tmp_string.length()];
