@@ -56,6 +56,15 @@ void CCameraControlDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON25, _startJob);
 	DDX_Control(pDX, IDC_LIST2, _rowList);
 
+	DDX_Control(pDX, IDC_EDIT_POS_Y_READONLY, _edit_pos_Y_readonly);
+	DDX_Control(pDX, IDC_EDIT_POS_Y_SEND, _edit_pos_Y_send);
+
+	DDX_Control(pDX, IDC_EDIT_POS_B_READONLY, _edit_pos_B_readonly);
+	DDX_Control(pDX, IDC_EDIT_POS_B_SEND, _edit_pos_B_send);
+
+	DDX_Control(pDX, IDC_EDIT_POS_B_READONLY, _edit_pos_B_readonly);
+	DDX_Control(pDX, IDC_EDIT_POS_B_SEND, _edit_pos_B_send);
+
 
 	_rowList.InsertColumn(0, "Number of shots");
 	_rowList.SetColumnWidth(0, 60);
@@ -173,8 +182,20 @@ void CCameraControlDlg::setupListener(ActionListener* listener)
 	_btnSend2Arduino.setActionCommand("Send2Arduino");
 	_btnSend2Arduino.addActionListener(listener);
 
+
+	//CActionButtons used only as ActionSource to trigger event from a CEdit component
 	_btnMove2X.setActionCommand("Move2X");
 	_btnMove2X.addActionListener(listener);
+
+	_btnMove2Y.setActionCommand("Move2Y");
+	_btnMove2Y.addActionListener(listener);
+
+	_btnMove2B.setActionCommand("Move2B");
+	_btnMove2B.addActionListener(listener);
+
+	_btnMove2S.setActionCommand("Move2S");
+	_btnMove2S.addActionListener(listener);
+
 
 	//_btnAddRow.setActionCommand("AddRow");
 	//_btnAddRow.addActionListener(listener);
@@ -353,6 +374,7 @@ void CCameraControlDlg::OnEnChangeEdit3()
 
 void CCameraControlDlg::OnOK()
 {
+	CString positionString;
 	if (GetFocus() == &_edit3)
 	{
 		// TODO: Add your handling of the Return key here.
@@ -377,6 +399,46 @@ void CCameraControlDlg::OnOK()
 		delete posDataInt;
 		// Call `return` to leave the dialog open.
 		return;
+	}
+
+	else if (GetFocus() == &_edit_pos_Y_send)
+	{
+		_edit_pos_Y_send.GetWindowText(positionString);
+		int posDataInt = CString2Int(positionString);
+		if (isValidMoveXInput(posDataInt))
+		{
+			_btnMove2Y.fireEvent(&posDataInt);
+		}
+
+		// Convert a TCHAR string to a LPCSTR
+		CT2CA pszConvertedAnsiString(positionString);
+		_edit_pos_Y_readonly.SetWindowTextA(positionString);
+	}
+	else if (GetFocus() == &_edit_pos_B_send)
+	{
+		_edit_pos_B_send.GetWindowText(positionString);
+		int posDataInt = CString2Int(positionString);
+		if (isValidMoveXInput(posDataInt))
+		{
+			_btnMove2B.fireEvent(&posDataInt);
+		}
+
+		// Convert a TCHAR string to a LPCSTR
+		CT2CA pszConvertedAnsiString(positionString);
+		_edit_pos_B_readonly.SetWindowTextA(positionString);
+	}
+	else if (GetFocus() == &_edit_pos_S_send)
+	{
+		_edit_pos_S_send.GetWindowText(positionString);
+		int posDataInt = CString2Int(positionString);
+		if (isValidMoveXInput(posDataInt))
+		{
+			_btnMove2S.fireEvent(&posDataInt);
+		}
+
+		// Convert a TCHAR string to a LPCSTR
+		CT2CA pszConvertedAnsiString(positionString);
+		_edit_pos_S_readonly.SetWindowTextA(positionString);
 	}
 
 	// Default behavior: Close the dialog.

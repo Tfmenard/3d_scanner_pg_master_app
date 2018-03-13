@@ -12,10 +12,8 @@ public:
 
 	virtual bool execute()
 	{
-		//char *command_string;
-		//command_string = buildCmdString(&cmd_stream, _target_position, _speed, &_motor_id);
-		//Override
-		SerialPort arduino(XW_arduino_port);
+		
+		SerialPort arduino(XS_arduino_port);
 
 		if (arduino.isConnected())
 		{
@@ -40,6 +38,48 @@ public:
 			arduino.writeSerialPort(command_string, MAX_DATA_LENGTH);
 			//Getting reply from arduino
 			arduino.readSerialPort(output, MAX_DATA_LENGTH);
+			
+			vector<string> data_vector;
+			bool atDestination = false;
+
+			//Build command string for Encoder
+			command_string = buildCmdString(&cmd_stream, &cmd_ids.Encoder, _target_position, _speed, &_motor_id);
+
+			char *output_ptr[MAX_DATA_LENGTH];
+			*output_ptr = output;
+
+			//Poll encoder until motor reaches destination
+			while (!atDestination)
+			{
+
+				//Overwrite RxBuffer
+				arduino.readSerialPort(output, MAX_DATA_LENGTH);
+
+				//Parse RxBuffer
+				findCommandData(output_ptr, data_vector);
+
+				//Filter Commands
+				if (data_vector.size() == 3)
+				{
+					//Filter ECD commands
+					if (data_vector[0] == "ECD")
+					{
+						//Convert String to int
+						string positionString = data_vector[2];
+						std::string::size_type sz;   // alias of size_t
+						int position = std::stoi(positionString, &sz);
+
+						//Check if within threshold
+						if (position >  _target_position - 0.6 && position < _target_position + 0.6)
+						{
+							atDestination = true;
+						}
+					}
+					
+				}
+
+			}
+
 			//printing the output
 			puts(output);
 			//freeing c_string memory

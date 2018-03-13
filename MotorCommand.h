@@ -23,7 +23,7 @@ class MotorCommand : public Command
 
 		//Default port for arduinos on Windows
 		char *YB_arduino_port = "\\\\.\\COM11";
-		char *XW_arduino_port = "\\\\.\\COM13";
+		char *XS_arduino_port = "\\\\.\\COM13";
 
 
 		//List of possible motor ids
@@ -32,7 +32,14 @@ class MotorCommand : public Command
 			char X = 'X';
 			char Y = 'Y';
 			char B = 'B';
+			char S = 'S';
 		}  motor_ids ;
+
+		struct cmd_id_enum
+		{
+			char Encoder = 'E';
+			
+		}  cmd_ids;
 
 		//Member variables used when building cmd strings
 		char _motor_id;
@@ -48,7 +55,7 @@ class MotorCommand : public Command
 		//String stream used to concatenate different types into one string
 		stringstream cmd_stream;
 
-	private:
+	protected:
 		//Cmd identifier for DC motors
 		char *cmd_identifier = "M";
 
@@ -66,12 +73,55 @@ class MotorCommand : public Command
 			cmd_string = new char[sizeof(_target_position) + sizeof(_speed) + 2];
 
 		}
+		MotorCommand(int* position, char id) :_target_position(*position)
+		{
+			setMotorId(id);
+			cmd_string = new char[sizeof(_target_position) + sizeof(_speed) + 2];
+
+		}
 	public:
 		MotorCommand(void);
 		~MotorCommand(void);
 
 		void setMotorId();
 
+		void setMotorId(char id);
+
+		void findCommandData(char *buffer[MAX_DATA_LENGTH], vector<string> &data_vector);
+
+		void findCommandData(char *buffer, vector<string> &data_vector, SerialPort &arduino);
+
+
+		char* buildCmdString(stringstream *cmd_stream_ptr, char *cmd_id, int position, int speed, char *motor_id_ptr)
+		{
+			//Build command as stringstream
+			*cmd_stream_ptr << *cmd_id;
+			*cmd_stream_ptr << ",";
+			*cmd_stream_ptr << *motor_id_ptr;
+			*cmd_stream_ptr << ",";
+			*cmd_stream_ptr << position;
+			*cmd_stream_ptr << '\n';
+			//*cmd_stream_ptr << ",";
+			//*cmd_stream_ptr << speed;
+
+			//Convert to stringstream to string
+			string tmp_string = cmd_stream_ptr->str();
+
+			std::string segment;
+			std::vector<std::string> seglist;
+
+			getline(*cmd_stream_ptr, tmp_string, '\0');
+			seglist.push_back(tmp_string);
+
+
+			//Initiate cmd_string member variable
+			cmd_string = new char[tmp_string.length()];
+
+			// Copying the contents of tmp_string to char array cmd_string
+			strcpy(cmd_string, tmp_string.c_str());
+
+			return cmd_string;
+		}
 
 		char* buildCmdString(stringstream *cmd_stream_ptr, int position, int speed, char *motor_id_ptr)
 		{
@@ -103,6 +153,5 @@ class MotorCommand : public Command
 
 			return cmd_string;
 		}
-
 };
 

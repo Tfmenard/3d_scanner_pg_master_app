@@ -9,6 +9,7 @@ MotorXCommand::MotorXCommand()
 
 MotorXCommand::~MotorXCommand()
 {
+	delete [] cmd_string;
 }
 
 void MotorXCommand::setMotorId()

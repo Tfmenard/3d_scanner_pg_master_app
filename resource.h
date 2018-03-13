@@ -48,7 +48,14 @@
 #define IDC_LIST1                       1039
 #define IDC_BUTTON25                    1039
 #define IDC_LIST2                       1040
+#define IDC_EDIT_POS_Y_READONLY         1041
+#define IDC_EDIT_POS_Y_SEND             1042
+#define IDC_EDIT_POS_B_READONLY         1043
+#define IDC_EDIT_POS_B_SEND             1044
+#define IDC_EDIT_POS_S_READONLY         1045
 #define IDC_MFCVSLISTBOX1               1046
+#define IDC_EDIT_POS_B_SEND2            1046
+#define IDC_EDIT_POS_S_SEND             1046
 #define IDC_MFCSHELLLIST1               1047
 
 // Next default values for new objects

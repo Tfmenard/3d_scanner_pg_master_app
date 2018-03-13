@@ -70,6 +70,10 @@ public:
 	enum { IDD = IDD_CAMERACONTROL_DIALOG };
 	
 	CActionButton	_btnMove2X;
+	CActionButton	_btnMove2Y;
+	CActionButton	_btnMove2B;
+	CActionButton	_btnMove2S;
+
 	CActionButton	_btnSend2Arduino;
 	CButton	_btnAddRow;
 	CActionButton	_btnPopulateNewRow;
@@ -98,6 +102,14 @@ public:
 	CEdit			_edit2;
 	CEdit			_edit3;
 	CEdit			_edit4;
+
+	CEdit			_edit_pos_Y_readonly;
+	CEdit			_edit_pos_B_readonly;
+	CEdit			_edit_pos_S_readonly;
+
+	CEdit			_edit_pos_Y_send;
+	CEdit			_edit_pos_B_send;
+	CEdit			_edit_pos_S_send;
 
 	CListCtrl		_rowList;
 

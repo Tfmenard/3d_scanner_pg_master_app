@@ -42,6 +42,9 @@
 
 #include "StartSerial2ArduinoCommand.h"
 #include "MotorXCommand.h"
+#include "MotorYCommand.h"
+#include "MotorBCommand.h"
+#include "MotorSCommand.h"
 //#include "CameraControlDlg.h"
 
 class CameraController : public ActionListener
@@ -96,8 +99,30 @@ public:
 		{
 
 			int* pos2Go = (int*) event.getArg();
-			StoreAsync(new MotorXCommand(pos2Go, 5));
+			StoreAsync(new MotorXCommand(pos2Go, 'X'));
 		}
+
+		if (command == "Move2Y")
+		{
+
+			int* pos2Go = (int*)event.getArg();
+			StoreAsync(new MotorYCommand(pos2Go, 'Y'));
+		}
+
+		if (command == "Move2B")
+		{
+
+			int* pos2Go = (int*)event.getArg();
+			StoreAsync(new MotorBCommand(pos2Go, 'B'));
+		}
+
+		if (command == "Move2S")
+		{
+
+			int* pos2Go = (int*)event.getArg();
+			StoreAsync(new MotorBCommand(pos2Go, 'S'));
+		}
+
 
 		if (command == "AddRow")
 		{

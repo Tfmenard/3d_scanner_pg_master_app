@@ -220,8 +220,11 @@
     <ClCompile Include="ImageQuality.cpp" />
     <ClCompile Include="Iso.cpp" />
     <ClCompile Include="MeteringMode.cpp" />
+    <ClCompile Include="MotorBCommand.cpp" />
     <ClCompile Include="MotorCommand.cpp" />
+    <ClCompile Include="MotorSCommand.cpp" />
     <ClCompile Include="MotorXCommand.cpp" />
+    <ClCompile Include="MotorYCommand.cpp" />
     <ClCompile Include="PropertyComboBox.cpp" />
     <ClCompile Include="RowDlg.cpp" />
     <ClCompile Include="ScanJob.cpp" />
@@ -280,8 +283,11 @@
     <ClInclude Include="ImageQuality.h" />
     <ClInclude Include="Iso.h" />
     <ClInclude Include="MeteringMode.h" />
+    <ClInclude Include="MotorBCommand.h" />
     <ClInclude Include="MotorCommand.h" />
+    <ClInclude Include="MotorSCommand.h" />
     <ClInclude Include="MotorXCommand.h" />
+    <ClInclude Include="MotorYCommand.h" />
     <ClInclude Include="PropertyComboBox.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="RowDlg.h" />

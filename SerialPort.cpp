@@ -32,7 +32,7 @@ SerialPort::SerialPort(char *portName)
 			dcbSerialParameters.ByteSize = 8;
 			dcbSerialParameters.StopBits = ONESTOPBIT;
 			dcbSerialParameters.Parity = NOPARITY;
-			dcbSerialParameters.fDtrControl = DTR_CONTROL_ENABLE;
+			dcbSerialParameters.fDtrControl = DTR_CONTROL_DISABLE; //avoid arduino reset
 
 			if (!SetCommState(handler, &dcbSerialParameters))
 			{
