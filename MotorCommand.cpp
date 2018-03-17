@@ -115,15 +115,97 @@ void MotorCommand::findCommandData(char *buffer[MAX_DATA_LENGTH], vector<string>
 			//Store data in vector. this way commands can have variable numbers of sub data blocks
 			data_vector.push_back(tmp_data_string);
 
-
+			if (data_vector.size() == 3)
+			{
+				break;
+			}
 
 		}
-		if (data_vector.size() > 3)
+
+		//Filter DM commands
+		if (data_vector.size() == 3)
 		{
-			data_vector.clear();
+			if (data_vector[0] == "DM")
+			{
+				break;
+			}
 		}
+		data_vector.clear();
 
 
 	}
+
+}
+
+void MotorCommand::readFeedbackStream(char *output[MAX_DATA_LENGTH], SerialPort &arduino)
+{
+	vector<string> data_vector;
+	bool atDestination = false;
+
+	char *output_ptr[MAX_DATA_LENGTH];
+	*output_ptr = *output;
+
+	//Poll encoder until motor reaches destination
+	while (!atDestination)
+	{
+
+		//Overwrite RxBuffer
+		int bytesRead = arduino.readSerialPort(*output, MAX_DATA_LENGTH);
+
+		//Parse RxBuffer
+		findCommandData(output_ptr, data_vector);
+
+		//Filter Commands
+		if (data_vector.size() == 3)
+		{
+			//Filter ECD commands
+			if (data_vector[0] == "DMC")
+			{
+				//Convert String to int
+				string positionString = data_vector[2];
+				std::string::size_type sz;   // alias of size_t
+				int position = std::stoi(positionString, &sz);
+
+				//Check if within threshold
+				if (position >  _target_position - 2 && position < _target_position + 2)
+				{
+					atDestination = true;
+				}
+			}
+
+		}
+
+	}
+}
+
+char* MotorCommand::buildCmdString(stringstream *cmd_stream_ptr, char *cmd_id, int position, int speed, char *motor_id_ptr, char *resp_id)
+{
+	//Build command as stringstream
+	*cmd_stream_ptr << *cmd_id;
+	*cmd_stream_ptr << ",";
+	*cmd_stream_ptr << *motor_id_ptr;
+	*cmd_stream_ptr << ",";
+	*cmd_stream_ptr << *resp_id;
+	*cmd_stream_ptr << '\n';
+	//*cmd_stream_ptr << ",";
+	//*cmd_stream_ptr << speed;
+
+	//Convert to stringstream to string
+	string tmp_string = cmd_stream_ptr->str();
+
+	std::string segment;
+	std::vector<std::string> seglist;
+
+	getline(*cmd_stream_ptr, tmp_string, '\0');
+	seglist.push_back(tmp_string);
+
+
+	//Initiate cmd_string member variable
+	cmd_string = new char[tmp_string.length()];
+
+	// Copying the contents of tmp_string to char array cmd_string
+	strcpy(cmd_string, tmp_string.c_str());
+
+	return cmd_string;
 
 }

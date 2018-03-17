@@ -41,6 +41,12 @@ public:
 			//Getting reply from arduino
 			arduino.readSerialPort(output, MAX_DATA_LENGTH);
 
+			char *output_ptr[MAX_DATA_LENGTH];
+			*output_ptr = output;
+
+			readFeedbackStream(output_ptr, arduino);
+
+
 			//printing the output
 			puts(output);
 			//freeing c_string memory

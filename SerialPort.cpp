@@ -63,10 +63,11 @@ int SerialPort::readSerialPort(char *buffer, unsigned int buf_size)
 	ClearCommError(this->handler, &this->errors, &this->status);
 
 	if (this->status.cbInQue > 0) {
-		if (this->status.cbInQue > buf_size) {
-			toRead = buf_size;
-		}
-		else toRead = this->status.cbInQue;
+		//if (this->status.cbInQue > buf_size) {
+			//toRead = buf_size;
+		//}
+		//else toRead = this->status.cbInQue;
+		toRead = buf_size;
 	}
 
 	if (ReadFile(this->handler, buffer, toRead, &bytesRead, NULL)) return bytesRead;

@@ -42,9 +42,6 @@ public:
 			vector<string> data_vector;
 			bool atDestination = false;
 
-			//Build command string for Encoder
-			command_string = buildCmdString(&cmd_stream, &cmd_ids.Encoder, _target_position, _speed, &_motor_id);
-
 			char *output_ptr[MAX_DATA_LENGTH];
 			*output_ptr = output;
 

@@ -51,8 +51,13 @@ public:
 
 	//TODO: Add other motor commands
 	int motorYPos;
+	LPCTSTR MotorYCommand = "Move2Y";
+
 	int motorBAngle;
+	LPCTSTR MotorBCommand = "Move2B";
+
 	int servoTitleAngle;
+	LPCTSTR MotorSCommand = "Move2S";
 
 
 

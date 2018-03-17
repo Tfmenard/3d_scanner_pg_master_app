@@ -48,10 +48,18 @@ void Shot::sendCommands()
 	//Set ISO
 	fireEvent(IsoCommand, &IsoData);
 
-	//Set X position
-	fireEvent(MotorXCommand, &motorXPos);
+	//Set Y position
+	fireEvent(MotorYCommand, &motorYPos);
 
-	//TODO: Add other motor commands
+	//Set X position
+	//fireEvent(MotorXCommand, &motorXPos);
+
+	//Set S position
+	//fireEvent(MotorSCommand, &servoTitleAngle);
+
+	//Set B position
+	fireEvent(MotorBCommand, &motorBAngle);
+
 
 	fireEvent(TakePictureCommand);
 

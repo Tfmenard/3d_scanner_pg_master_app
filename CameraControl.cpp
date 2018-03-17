@@ -23,6 +23,10 @@
 #include "CameraController.h"
 #include "CameraEventListener.h"
 
+#define _CRTDBG_MAP_ALLOC  
+#include <crtdbg.h>
+
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

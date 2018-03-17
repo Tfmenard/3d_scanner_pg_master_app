@@ -120,7 +120,7 @@ public:
 		{
 
 			int* pos2Go = (int*)event.getArg();
-			StoreAsync(new MotorBCommand(pos2Go, 'S'));
+			StoreAsync(new MotorSCommand(pos2Go, 'S'));
 		}
 
 

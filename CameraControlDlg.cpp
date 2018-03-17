@@ -378,7 +378,7 @@ void CCameraControlDlg::OnOK()
 	if (GetFocus() == &_edit3)
 	{
 		// TODO: Add your handling of the Return key here.
-		TRACE0("Return key in edit control pressed\n");
+		TRACE0("Sending X command in calibration mode\n");
 		//If ValidInput call Move2X
 		CString text;
 		_edit3.GetWindowText(text);
@@ -403,8 +403,10 @@ void CCameraControlDlg::OnOK()
 
 	else if (GetFocus() == &_edit_pos_Y_send)
 	{
+		TRACE0("Sending Y command in calibration mode\n");
 		_edit_pos_Y_send.GetWindowText(positionString);
 		int posDataInt = CString2Int(positionString);
+
 		if (isValidMoveXInput(posDataInt))
 		{
 			_btnMove2Y.fireEvent(&posDataInt);
@@ -413,11 +415,15 @@ void CCameraControlDlg::OnOK()
 		// Convert a TCHAR string to a LPCSTR
 		CT2CA pszConvertedAnsiString(positionString);
 		_edit_pos_Y_readonly.SetWindowTextA(positionString);
+		
+
+		return;
 	}
 	else if (GetFocus() == &_edit_pos_B_send)
 	{
 		_edit_pos_B_send.GetWindowText(positionString);
 		int posDataInt = CString2Int(positionString);
+
 		if (isValidMoveXInput(posDataInt))
 		{
 			_btnMove2B.fireEvent(&posDataInt);
@@ -426,6 +432,8 @@ void CCameraControlDlg::OnOK()
 		// Convert a TCHAR string to a LPCSTR
 		CT2CA pszConvertedAnsiString(positionString);
 		_edit_pos_B_readonly.SetWindowTextA(positionString);
+
+		return;
 	}
 	else if (GetFocus() == &_edit_pos_S_send)
 	{
@@ -439,6 +447,8 @@ void CCameraControlDlg::OnOK()
 		// Convert a TCHAR string to a LPCSTR
 		CT2CA pszConvertedAnsiString(positionString);
 		_edit_pos_S_readonly.SetWindowTextA(positionString);
+
+		return;
 	}
 
 	// Default behavior: Close the dialog.
