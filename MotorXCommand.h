@@ -53,7 +53,7 @@ public:
 				arduino.readSerialPort(output, MAX_DATA_LENGTH);
 
 				//Parse RxBuffer
-				findCommandData(output_ptr, data_vector);
+				findCommandData(output, data_vector);
 
 				//Filter Commands
 				if (data_vector.size() == 3)

@@ -39,19 +39,20 @@ void MotorCommand::setMotorId(char id)
 		
 }
 
-void MotorCommand::findCommandData(char *buffer[MAX_DATA_LENGTH], vector<string> &data_vector)
+void MotorCommand::findCommandData(char (&buffer)[MAX_DATA_LENGTH], vector<string> &data_vector)
 {
-	int buffer_new_size = strlen(*buffer);
+	int buffer_new_size = strlen(buffer);
 	//char buffer_new[sizeof(*buffer)+1];
 	//strcpy_s(buffer_new, *buffer);
 
-	int buffer_size = strlen(*buffer);
+	int buffer_size = strlen(buffer);
 
 	//Convert buffer to string
-	string str(*buffer, buffer_size);
+	//string str(begin(buffer, buffer_size);
 
 	//convert buffer string to stringstream to parse each line it contains
-	std::stringstream  data(str);
+	std::stringstream  data;
+	data << buffer;
 
 	//String to store each line
 	std::string line;
@@ -62,7 +63,8 @@ void MotorCommand::findCommandData(char *buffer[MAX_DATA_LENGTH], vector<string>
 	string pos_data;
 
 	//Parse each line in buffer data
-	while (std::getline(data, line, '\n'))
+	char delim = '}';
+	while (std::getline(data, line, delim))
 	{
 
 
@@ -125,7 +127,7 @@ void MotorCommand::findCommandData(char *buffer[MAX_DATA_LENGTH], vector<string>
 		//Filter DM commands
 		if (data_vector.size() == 3)
 		{
-			if (data_vector[0] == "DM")
+			if (data_vector[0] == "DMC")
 			{
 				break;
 			}
@@ -137,42 +139,172 @@ void MotorCommand::findCommandData(char *buffer[MAX_DATA_LENGTH], vector<string>
 
 }
 
-void MotorCommand::readFeedbackStream(char *output[MAX_DATA_LENGTH], SerialPort &arduino)
+void MotorCommand::findCommandData(char(&buffer)[MAX_DATA_LENGTH], string &cmd_id, int &position, int buffer_size)
+{
+
+	int buffer_new_size = strlen(buffer);
+	int positionAsInt;
+
+
+	//Parse each line in buffer data
+	char startChar = '{';
+	char endChar = '}';
+
+	//Pointers to start and end of message
+	int startMsgIndex = 0;
+	int endMsgIndex = 0;
+
+	//Offsets relative to start of message char
+	int motor_id_offset = 5;
+	int pos_offset = 7;
+
+	bool foundStartChar = false;
+
+	while (startMsgIndex < buffer_size && endMsgIndex < buffer_size)
+	{
+
+		//Find new start and end indexes
+		for (int i = startMsgIndex; i<buffer_size; i++)
+		{
+			if (!foundStartChar)
+			{
+				if (buffer[i] == startChar)
+				{
+					startMsgIndex = i;
+					foundStartChar = true;
+					endMsgIndex = startMsgIndex + 10;
+				}
+
+			}
+			else
+			{
+				break;
+			}
+		}
+
+		//Make sure incomplete commands are not read
+		if (startMsgIndex >= buffer_size || endMsgIndex >= buffer_size)
+			break;
+
+
+		//Filter DM commands
+		if (buffer[startMsgIndex + 1] == 'E' && buffer[startMsgIndex + 2] == 'C' && buffer[startMsgIndex + 3] == 'D')
+		{
+			cmd_id = "ECD";
+			uint8_t divider = buffer[startMsgIndex + pos_offset];
+			uint8_t remainder = buffer[startMsgIndex + pos_offset + 1];
+			int position = divider * (120) + remainder;
+			//positionAsInt = (int)position;
+			break;
+		}
+
+		//Update Start index to next chracter location
+		startMsgIndex = endMsgIndex + 1;
+
+		//reset boolean condition for loop above
+		foundStartChar = false;
+
+
+	}
+}
+
+
+boolean MotorCommand::findCommandData(byte(&buffer)[MAX_DATA_LENGTH], string &cmd_id, int &position, int buffer_size)
+{
+
+	//Parse each line in buffer data
+	char startChar = '{';
+	char endChar = '}';
+
+	//Pointers to start and end of message
+	int startMsgIndex = 0;
+	int endMsgIndex = 10;
+
+	//Offsets relative to start of message char
+	int motor_id_offset = 5;
+	int pos_offset = 7;
+
+
+	//Filter DM commands
+	if (buffer[1] == 'E' && buffer[2] == 'C' && buffer[3] == 'D')
+	{
+		cmd_id = "ECD";
+		uint8_t divider = buffer[startMsgIndex + pos_offset];
+		uint8_t remainder = buffer[startMsgIndex + pos_offset + 1];
+		position = divider * (120) + remainder;
+		
+		return true;
+	}
+	return false;
+	
+}
+
+void MotorCommand::readFeedbackStream(char (&buffer)[MAX_DATA_LENGTH], SerialPort &arduino)
 {
 	vector<string> data_vector;
 	bool atDestination = false;
 
-	char *output_ptr[MAX_DATA_LENGTH];
-	*output_ptr = *output;
+	//char *output_ptr[MAX_DATA_LENGTH];
+	//*output_ptr = output;
 
 	//Poll encoder until motor reaches destination
 	while (!atDestination)
 	{
 
 		//Overwrite RxBuffer
-		int bytesRead = arduino.readSerialPort(*output, MAX_DATA_LENGTH);
-
+		int bytesRead = arduino.readSerialPort(output, MAX_DATA_LENGTH);
+		int position;
+		string cmd_id;
 		//Parse RxBuffer
-		findCommandData(output_ptr, data_vector);
+		findCommandData(output, cmd_id, position, MAX_DATA_LENGTH);
 
-		//Filter Commands
-		if (data_vector.size() == 3)
+		
+		//Filter ECD commands
+		if (cmd_id == "ECD")
 		{
-			//Filter ECD commands
-			if (data_vector[0] == "DMC")
+			//int position = ((uint16_t)posHead << 8) | posTail;
+			//Check if within threshold
+			if (position >  _target_position - 2 && position < _target_position + 2)
 			{
-				//Convert String to int
-				string positionString = data_vector[2];
-				std::string::size_type sz;   // alias of size_t
-				int position = std::stoi(positionString, &sz);
+				atDestination = true;
+			}
+		}
 
-				//Check if within threshold
-				if (position >  _target_position - 2 && position < _target_position + 2)
+	}
+
+
+}
+
+void MotorCommand::readFeedbackStream(byte(&buffer)[MAX_DATA_LENGTH], SerialPort &arduino)
+{
+	vector<string> data_vector;
+	bool atDestination = false;
+
+	//Poll encoder until motor reaches destination
+	while (!atDestination)
+	{
+
+		//Overwrite RxBuffer
+		int bytesRead = arduino.readSerialPort(buffer, MAX_DATA_LENGTH);
+		int position;
+		string cmd_id;
+
+		if (arduino.readSerialPort(buffer, MAX_DATA_LENGTH))
+		{
+			//Parse RxBuffer
+			if (findCommandData(buffer, cmd_id, position, MAX_DATA_LENGTH))
+			{
+				//Filter ECD commands
+				if (cmd_id == "ECD")
 				{
-					atDestination = true;
+					//int position = ((uint16_t)posHead << 8) | posTail;
+					//Check if within threshold
+					if (position >  _target_position - 2 && position < _target_position + 2)
+					{
+						atDestination = true;
+					}
 				}
 			}
-
 		}
 
 	}
@@ -180,6 +312,10 @@ void MotorCommand::readFeedbackStream(char *output[MAX_DATA_LENGTH], SerialPort 
 
 char* MotorCommand::buildCmdString(stringstream *cmd_stream_ptr, char *cmd_id, int position, int speed, char *motor_id_ptr, char *resp_id)
 {
+	memset(cmd_string, 0, sizeof(cmd_string));
+	cmd_stream.str(std::string());
+	cmd_stream.clear();
+
 	//Build command as stringstream
 	*cmd_stream_ptr << *cmd_id;
 	*cmd_stream_ptr << ",";

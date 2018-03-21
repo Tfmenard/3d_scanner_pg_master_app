@@ -63,16 +63,38 @@ int SerialPort::readSerialPort(char *buffer, unsigned int buf_size)
 	ClearCommError(this->handler, &this->errors, &this->status);
 
 	if (this->status.cbInQue > 0) {
-		//if (this->status.cbInQue > buf_size) {
-			//toRead = buf_size;
-		//}
-		//else toRead = this->status.cbInQue;
-		toRead = buf_size;
+		if (this->status.cbInQue > buf_size) {
+			toRead = buf_size;
+		}
+		else toRead = this->status.cbInQue;
+		//toRead = buf_size;
 	}
 
 	if (ReadFile(this->handler, buffer, toRead, &bytesRead, NULL)) return bytesRead;
 
 	return 0;
+}
+
+int SerialPort::readSerialPort(byte *buffer, unsigned int buf_size)
+{
+	DWORD bytesRead;
+	unsigned int toRead = 0;
+
+	ClearCommError(this->handler, &this->errors, &this->status);
+	bool completeMessageFound = false;
+
+	if (this->status.cbInQue > 0) {
+		if (this->status.cbInQue > buf_size) {
+			toRead = buf_size;
+		}
+		else toRead = this->status.cbInQue;
+		//toRead = buf_size;
+	}
+
+	if (ReadFile(this->handler, buffer, toRead, &bytesRead, NULL)) return bytesRead;
+
+	return 0;
+
 }
 
 bool SerialPort::writeSerialPort(char *buffer, unsigned int buf_size)

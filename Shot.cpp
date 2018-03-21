@@ -48,6 +48,7 @@ void Shot::sendCommands()
 	//Set ISO
 	fireEvent(IsoCommand, &IsoData);
 
+	
 	//Set Y position
 	fireEvent(MotorYCommand, &motorYPos);
 
@@ -60,6 +61,7 @@ void Shot::sendCommands()
 	//Set B position
 	fireEvent(MotorBCommand, &motorBAngle);
 
+	Sleep(1000);
 
 	fireEvent(TakePictureCommand);
 

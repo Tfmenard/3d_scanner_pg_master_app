@@ -3,7 +3,7 @@
 #define SERIALPORT_H
 
 #define ARDUINO_WAIT_TIME 2000
-#define MAX_DATA_LENGTH 247
+#define MAX_DATA_LENGTH 11
 
 #include <windows.h>
 #include <stdio.h>
@@ -22,6 +22,7 @@ public:
 	~SerialPort();
 
 	int readSerialPort(char *buffer, unsigned int buf_size);
+	int readSerialPort(byte *buffer, unsigned int buf_size);
 	bool writeSerialPort(char *buffer, unsigned int buf_size);
 	bool isConnected();
 };

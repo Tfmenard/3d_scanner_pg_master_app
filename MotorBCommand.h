@@ -9,8 +9,8 @@ public:
 	using MotorCommand::MotorCommand;
 
 	void setMotorId();
-
-	virtual bool execute()
+	virtual bool execute();
+	virtual bool execute2()
 	{
 		//char *command_string;
 		//command_string = buildCmdString(&cmd_stream, _target_position, _speed, &_motor_id);
@@ -34,18 +34,18 @@ public:
 
 			//Adding the delimiter
 			//c_string[input_string.size()] = '\n';
+			byte byte_buffer[MAX_DATA_LENGTH];
 
 			int command_string_length = strlen(command_string);
 			//Writing string to arduino
 			arduino.writeSerialPort(command_string, MAX_DATA_LENGTH);
+
 			//Getting reply from arduino
-			arduino.readSerialPort(output, MAX_DATA_LENGTH);
+			arduino.readSerialPort(byte_buffer, MAX_DATA_LENGTH);
 
-			char *output_ptr[MAX_DATA_LENGTH];
-			*output_ptr = output;
-
-			readFeedbackStream(output_ptr, arduino);
-
+			//This function will only return when the position status feedback stream returns a value within
+			//acceptale threshold
+			readFeedbackStream(byte_buffer, arduino);
 
 			//printing the output
 			puts(output);

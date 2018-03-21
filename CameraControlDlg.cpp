@@ -62,8 +62,8 @@ void CCameraControlDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT_POS_B_READONLY, _edit_pos_B_readonly);
 	DDX_Control(pDX, IDC_EDIT_POS_B_SEND, _edit_pos_B_send);
 
-	DDX_Control(pDX, IDC_EDIT_POS_B_READONLY, _edit_pos_B_readonly);
-	DDX_Control(pDX, IDC_EDIT_POS_B_SEND, _edit_pos_B_send);
+	DDX_Control(pDX, IDC_EDIT_POS_S_READONLY, _edit_pos_S_readonly);
+	DDX_Control(pDX, IDC_EDIT_POS_S_SEND, _edit_pos_S_send);
 
 
 	_rowList.InsertColumn(0, "Number of shots");
@@ -409,6 +409,7 @@ void CCameraControlDlg::OnOK()
 
 		if (isValidMoveXInput(posDataInt))
 		{
+
 			_btnMove2Y.fireEvent(&posDataInt);
 		}
 
@@ -553,19 +554,44 @@ void CCameraControlDlg::AddRow()
 	CString xPositionString;
 	_edit2.GetWindowText(xPositionString);
 
-	//Print row
+	//Get Y position
+	CString yPositionString;
+	_edit_pos_Y_readonly.GetWindowText(yPositionString);
+
+	//Get B position
+	CString bPositionString;
+	_edit_pos_B_readonly.GetWindowText(bPositionString);
+
+	//Get S position
+	CString sPositionString;
+	_edit_pos_S_readonly.GetWindowText(sPositionString);
+
+	//Print row info x
 	AddData(_rowList, new_row_num, 4, xPositionString);
 
+	//Print row info y
+	AddData(_rowList, new_row_num, 5, yPositionString);
+
+	//Print row info b
+	AddData(_rowList, new_row_num, 6, bPositionString);
+
+	//Print row info s
+	AddData(_rowList, new_row_num, 7, sPositionString);
+
+
 	int xPositionInt = CString2Int(xPositionString);
+	int yPositionInt = CString2Int(yPositionString);
+	int bPositionInt = CString2Int(bPositionString);
+	int sPositionInt = CString2Int(sPositionString);
 
 	Shot *newShot = new Shot(
 		_comboTv.GetItemData(currShutterSpeed), 
 		_comboAv.GetItemData(currApperture),
 		_comboIso.GetItemData(currIso),
 		xPositionInt,
-		3,
-		3,
-		3
+		yPositionInt,
+		bPositionInt,
+		sPositionInt
 	
 	);
 
@@ -576,8 +602,8 @@ void CCameraControlDlg::AddRow()
 		_comboAv.GetItemData(currApperture),
 		_comboIso.GetItemData(currIso),
 		xPositionInt,
-		3,
-		3,
+		yPositionInt,
+		bPositionInt,
 		_controller
 	);
 	

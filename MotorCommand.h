@@ -88,11 +88,16 @@ class MotorCommand : public Command
 
 		void setMotorId(char id);
 
-		void findCommandData(char *buffer[MAX_DATA_LENGTH], vector<string> &data_vector);
+		void findCommandData(char (&buffer)[MAX_DATA_LENGTH], vector<string> &data_vector);
 
 		void findCommandData(char *buffer, vector<string> &data_vector, SerialPort &arduino);
 
-		void readFeedbackStream(char *buffer[MAX_DATA_LENGTH], SerialPort &arduino);
+		void findCommandData(char(&buffer)[MAX_DATA_LENGTH], string &cmd_id, int &position, int buffer_size);
+
+		boolean findCommandData(byte(&buffer)[MAX_DATA_LENGTH], string &cmd_id, int &position, int buffer_size);
+
+		void readFeedbackStream(char (&buffer)[MAX_DATA_LENGTH], SerialPort &arduino);
+		void readFeedbackStream(byte(&buffer)[MAX_DATA_LENGTH], SerialPort &arduino);
 
 
 		char* buildCmdString(stringstream *cmd_stream_ptr, char *cmd_id, int position, int speed, char *motor_id_ptr, char *resp_id);
