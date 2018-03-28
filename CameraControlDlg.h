@@ -79,6 +79,9 @@ public:
 	CActionButton	_btnPopulateNewRow;
 	CButton	_startJob;
 
+	CActionButton	_btnHomeY;
+
+
 	ScanJob scanJob;
 
 	CActionButton	_btnTakePicture;

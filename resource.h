@@ -57,6 +57,8 @@
 #define IDC_EDIT_POS_B_SEND2            1046
 #define IDC_EDIT_POS_S_SEND             1046
 #define IDC_MFCSHELLLIST1               1047
+#define IDC_BUTTON26                    1047
+#define IDC_BUTTON_HOME_Y               1047
 
 // Next default values for new objects
 // 

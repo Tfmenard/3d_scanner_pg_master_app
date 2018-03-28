@@ -56,6 +56,8 @@ void CCameraControlDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON25, _startJob);
 	DDX_Control(pDX, IDC_LIST2, _rowList);
 
+	DDX_Control(pDX, IDC_BUTTON_HOME_Y, _btnHomeY);
+
 	DDX_Control(pDX, IDC_EDIT_POS_Y_READONLY, _edit_pos_Y_readonly);
 	DDX_Control(pDX, IDC_EDIT_POS_Y_SEND, _edit_pos_Y_send);
 
@@ -182,6 +184,8 @@ void CCameraControlDlg::setupListener(ActionListener* listener)
 	_btnSend2Arduino.setActionCommand("Send2Arduino");
 	_btnSend2Arduino.addActionListener(listener);
 
+	_btnHomeY.setActionCommand("YB_HOMING");
+	_btnHomeY.addActionListener(listener);
 
 	//CActionButtons used only as ActionSource to trigger event from a CEdit component
 	_btnMove2X.setActionCommand("Move2X");

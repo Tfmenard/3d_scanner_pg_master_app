@@ -109,6 +109,15 @@ public:
 			StoreAsync(new MotorYCommand(pos2Go, 'Y'));
 		}
 
+		if (command == "YB_HOMING")
+		{
+			int zero = 0;
+			int* pos2Go = &zero;
+			MotorYCommand *homing_command = new MotorYCommand(pos2Go, 'Y');
+			homing_command->isHoming = true;
+			StoreAsync(homing_command);
+		}
+
 		if (command == "Move2B")
 		{
 

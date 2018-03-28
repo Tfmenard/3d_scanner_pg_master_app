@@ -24,7 +24,7 @@ class MotorCommand : public Command
 
 		//Default port for arduinos on Windows
 		char *YB_arduino_port = "\\\\.\\COM13";
-		char *XS_arduino_port = "\\\\.\\COM13";
+		char *XS_arduino_port = "\\\\.\\COM15";
 
 
 		//List of possible motor ids
@@ -95,10 +95,11 @@ class MotorCommand : public Command
 		void findCommandData(char(&buffer)[MAX_DATA_LENGTH], string &cmd_id, int &position, int buffer_size);
 
 		boolean findCommandData(byte(&buffer)[MAX_DATA_LENGTH], string &cmd_id, int &position, int buffer_size);
+		boolean findCommandData(byte(&buffer)[MAX_DATA_LENGTH], string &cmd_id, int &position, int buffer_size, string trgt_cmd);
 
 		void readFeedbackStream(char (&buffer)[MAX_DATA_LENGTH], SerialPort &arduino);
 		void readFeedbackStream(byte(&buffer)[MAX_DATA_LENGTH], SerialPort &arduino);
-
+		void readFeedbackStream(byte(&buffer)[MAX_DATA_LENGTH], SerialPort &arduino, string trgt_cmd);
 
 		char* buildCmdString(stringstream *cmd_stream_ptr, char *cmd_id, int position, int speed, char *motor_id_ptr, char *resp_id);
 		

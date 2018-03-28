@@ -239,6 +239,36 @@ boolean MotorCommand::findCommandData(byte(&buffer)[MAX_DATA_LENGTH], string &cm
 	
 }
 
+boolean MotorCommand::findCommandData(byte(&buffer)[MAX_DATA_LENGTH], string &cmd_id, int &position, int buffer_size, string trgt_cmd)
+{
+
+	//Parse each line in buffer data
+	char startChar = '{';
+	char endChar = '}';
+
+	//Pointers to start and end of message
+	int startMsgIndex = 0;
+	int endMsgIndex = 10;
+
+	//Offsets relative to start of message char
+	int motor_id_offset = 5;
+	int pos_offset = 7;
+
+
+	//Filter DM commands
+	if (buffer[1] == trgt_cmd.at(0) && buffer[2] == trgt_cmd.at(1) && buffer[3] == trgt_cmd.at(2))
+	{
+		cmd_id = trgt_cmd;
+		uint8_t divider = buffer[startMsgIndex + pos_offset];
+		uint8_t remainder = buffer[startMsgIndex + pos_offset + 1];
+		position = divider * (120) + remainder;
+
+		return true;
+	}
+	return false;
+
+}
+
 void MotorCommand::readFeedbackStream(char (&buffer)[MAX_DATA_LENGTH], SerialPort &arduino)
 {
 	vector<string> data_vector;
@@ -296,6 +326,42 @@ void MotorCommand::readFeedbackStream(byte(&buffer)[MAX_DATA_LENGTH], SerialPort
 			{
 				//Filter ECD commands
 				if (cmd_id == "ECD")
+				{
+					//int position = ((uint16_t)posHead << 8) | posTail;
+					//Check if within threshold
+					if (position >  _target_position - 2 && position < _target_position + 2)
+					{
+						atDestination = true;
+					}
+				}
+			}
+		}
+
+	}
+}
+
+void MotorCommand::readFeedbackStream(byte(&buffer)[MAX_DATA_LENGTH], SerialPort &arduino, string trgt_cmd)
+{
+	vector<string> data_vector;
+	bool atDestination = false;
+
+	//Poll encoder until motor reaches destination
+	while (!atDestination)
+	{
+
+		//Overwrite RxBuffer
+		int bytesRead = arduino.readSerialPort(buffer, MAX_DATA_LENGTH);
+		int position;
+		string cmd_id;
+		
+
+		if (arduino.readSerialPort(buffer, MAX_DATA_LENGTH))
+		{
+			//Parse RxBuffer
+			if (findCommandData(buffer, cmd_id, position, MAX_DATA_LENGTH, "HCD"))
+			{
+				//Filter ECD commands
+				if (cmd_id == trgt_cmd)
 				{
 					//int position = ((uint16_t)posHead << 8) | posTail;
 					//Check if within threshold

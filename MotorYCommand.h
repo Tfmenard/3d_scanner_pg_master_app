@@ -4,6 +4,8 @@
 class MotorYCommand : public MotorCommand
 {
 public:
+	bool isHoming = false;
+public:
 	MotorYCommand();
 	~MotorYCommand();
 	using MotorCommand::MotorCommand;
