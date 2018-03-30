@@ -55,6 +55,7 @@ void CCameraControlDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON23, _btnAddRow);
 	DDX_Control(pDX, IDC_BUTTON25, _startJob);
 	DDX_Control(pDX, IDC_LIST2, _rowList);
+	DDX_Control(pDX, IDC_BUTTON_HOME_X, _btnHomeX);
 
 	DDX_Control(pDX, IDC_BUTTON_HOME_Y, _btnHomeY);
 
@@ -139,6 +140,9 @@ BEGIN_MESSAGE_MAP(CCameraControlDlg, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON23, &CCameraControlDlg::OnBnClickedButton23)
 	ON_EN_CHANGE(IDC_EDIT4, &CCameraControlDlg::OnEnChangeEdit4)
 	ON_BN_CLICKED(IDC_BUTTON25, &CCameraControlDlg::OnBnClickedButton25)
+	ON_EN_CHANGE(IDC_EDIT_POS_Y_SEND, &CCameraControlDlg::OnEnChangeEditPosYSend)
+	ON_EN_CHANGE(IDC_EDIT_POS_B_SEND, &CCameraControlDlg::OnEnChangeEditPosBSend)
+	ON_EN_CHANGE(IDC_EDIT_POS_S_SEND, &CCameraControlDlg::OnEnChangeEditPosSSend)
 END_MESSAGE_MAP()
 
 
@@ -183,6 +187,9 @@ void CCameraControlDlg::setupListener(ActionListener* listener)
 
 	_btnSend2Arduino.setActionCommand("Send2Arduino");
 	_btnSend2Arduino.addActionListener(listener);
+
+	_btnHomeX.setActionCommand("XS_HOMING");
+	_btnHomeX.addActionListener(listener);
 
 	_btnHomeY.setActionCommand("YB_HOMING");
 	_btnHomeY.addActionListener(listener);
@@ -588,6 +595,7 @@ void CCameraControlDlg::AddRow()
 	int bPositionInt = CString2Int(bPositionString);
 	int sPositionInt = CString2Int(sPositionString);
 
+	//TODO: Erase this
 	Shot *newShot = new Shot(
 		_comboTv.GetItemData(currShutterSpeed), 
 		_comboAv.GetItemData(currApperture),
@@ -607,7 +615,7 @@ void CCameraControlDlg::AddRow()
 		_comboIso.GetItemData(currIso),
 		xPositionInt,
 		yPositionInt,
-		bPositionInt,
+		sPositionInt,
 		_controller
 	);
 	
@@ -672,4 +680,56 @@ void CCameraControlDlg::OnBnClickedButton25()
 {
 	//Start scan job
 	scanJob.startJob();
+}
+
+
+void CCameraControlDlg::OnEnChangeEditPosYSend()
+{
+	// TODO:  If this is a RICHEDIT control, the control will not
+	// send this notification unless you override the __super::OnInitDialog()
+	// function and call CRichEditCtrl().SetEventMask()
+	// with the ENM_CHANGE flag ORed into the mask.
+
+	// TODO:  Add your control notification handler code here
+
+	CString text;
+	_edit_pos_Y_send.GetWindowText(text);
+
+	// Convert a TCHAR string to a LPCSTR
+	CT2CA pszConvertedAnsiString(text);
+	_edit_pos_Y_readonly.SetWindowTextA(text);
+}
+
+
+void CCameraControlDlg::OnEnChangeEditPosBSend()
+{
+	// TODO:  If this is a RICHEDIT control, the control will not
+	// send this notification unless you override the __super::OnInitDialog()
+	// function and call CRichEditCtrl().SetEventMask()
+	// with the ENM_CHANGE flag ORed into the mask.
+
+	// TODO:  Add your control notification handler code here
+	CString text;
+	_edit_pos_B_send.GetWindowText(text);
+
+	// Convert a TCHAR string to a LPCSTR
+	CT2CA pszConvertedAnsiString(text);
+	_edit_pos_B_readonly.SetWindowTextA(text);
+}
+
+
+void CCameraControlDlg::OnEnChangeEditPosSSend()
+{
+	// TODO:  If this is a RICHEDIT control, the control will not
+	// send this notification unless you override the __super::OnInitDialog()
+	// function and call CRichEditCtrl().SetEventMask()
+	// with the ENM_CHANGE flag ORed into the mask.
+
+	// TODO:  Add your control notification handler code here
+	CString text;
+	_edit_pos_S_send.GetWindowText(text);
+
+	// Convert a TCHAR string to a LPCSTR
+	CT2CA pszConvertedAnsiString(text);
+	_edit_pos_S_readonly.SetWindowTextA(text);
 }

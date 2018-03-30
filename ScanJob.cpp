@@ -45,10 +45,11 @@ void ScanJob::startJob()
 	while (rowIterator != rows.end())
 	{
 		shotIterator = (rowIterator)->begin();
+		shotIterator->setRowShots();
 
 		while (shotIterator != rowIterator->end())
 		{
-			(shotIterator++)->sendCommands();
+			(shotIterator++)->setBaseAndCapture();
 		}
 
 		rowIterator++;

@@ -118,6 +118,16 @@ public:
 			StoreAsync(homing_command);
 		}
 
+		if (command == "XS_HOMING")
+		{
+			int zero = 0;
+			int* pos2Go = &zero;
+			MotorXCommand *homing_command = new MotorXCommand(pos2Go, 'X');
+			homing_command->isHoming = true;
+			StoreAsync(homing_command);
+		}
+
+
 		if (command == "Move2B")
 		{
 

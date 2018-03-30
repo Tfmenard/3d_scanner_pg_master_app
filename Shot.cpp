@@ -53,18 +53,60 @@ void Shot::sendCommands()
 	fireEvent(MotorYCommand, &motorYPos);
 
 	//Set X position
-	//fireEvent(MotorXCommand, &motorXPos);
+	fireEvent(MotorXCommand, &motorXPos);
 
 	//Set S position
-	//fireEvent(MotorSCommand, &servoTitleAngle);
+	fireEvent(MotorSCommand, &servoTitleAngle);
 
 	//Set B position
 	fireEvent(MotorBCommand, &motorBAngle);
 
-	Sleep(1000);
+	//Sleep(1000);
 
 	fireEvent(TakePictureCommand);
 
-	Sleep(2000);
+	//Sleep(2000);
 	
+}
+
+
+void Shot::setRowShots()
+{
+	//Set Tv
+	fireEvent(TvCommand, &TvData);
+
+	//Set Av
+	fireEvent(AvCommand, &AvData);
+
+	//Set ISO
+	fireEvent(IsoCommand, &IsoData);
+
+
+	//Set Y position
+	fireEvent(MotorYCommand, &motorYPos);
+
+	//Set X position
+	fireEvent(MotorXCommand, &motorXPos);
+
+	//Set S position
+	fireEvent(MotorSCommand, &servoTitleAngle);
+}
+
+void Shot::setBaseAndCapture()
+{
+	//Set B position
+	fireEvent(MotorBCommand, &motorBAngle);
+
+	//Sleep(1000);
+
+	fireEvent(TakePictureCommand);
+
+	//Sleep(2000);
+}
+
+
+void Shot::homeAll()
+{
+	fireEvent(homeYBCommand);
+	fireEvent(homeXSCommand);
 }

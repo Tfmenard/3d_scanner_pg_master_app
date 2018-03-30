@@ -59,6 +59,8 @@
 #define IDC_MFCSHELLLIST1               1047
 #define IDC_BUTTON26                    1047
 #define IDC_BUTTON_HOME_Y               1047
+#define IDC_BUTTON_HOME_Y2              1048
+#define IDC_BUTTON_HOME_X               1048
 
 // Next default values for new objects
 // 

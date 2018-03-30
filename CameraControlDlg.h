@@ -80,6 +80,7 @@ public:
 	CButton	_startJob;
 
 	CActionButton	_btnHomeY;
+	CActionButton _btnHomeX;
 
 
 	ScanJob scanJob;
@@ -161,4 +162,7 @@ public:
 	afx_msg void OnBnClickedButton23();
 	afx_msg void OnEnChangeEdit4();
 	afx_msg void OnBnClickedButton25();
+	afx_msg void OnEnChangeEditPosYSend();
+	afx_msg void OnEnChangeEditPosBSend();
+	afx_msg void OnEnChangeEditPosSSend();
 };

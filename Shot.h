@@ -59,6 +59,9 @@ public:
 	int servoTitleAngle;
 	LPCTSTR MotorSCommand = "Move2S";
 
+	LPCTSTR homeYBCommand = "YB_HOMING";
+	LPCTSTR homeXSCommand = "XS_HOMING";
+
 
 
 public:
@@ -73,6 +76,12 @@ public:
 	void fireEventAv(DWORD_PTR *data);
 
 	void sendCommands();
+
+	void setRowShots();
+
+	void setBaseAndCapture();
+
+	void homeAll();
 
 	void setupListener(ActionListener* listener);
 };

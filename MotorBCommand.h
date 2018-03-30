@@ -47,6 +47,7 @@ public:
 			//acceptale threshold
 			readFeedbackStream(byte_buffer, arduino);
 
+			Sleep(2000);
 			//printing the output
 			puts(output);
 			//freeing c_string memory

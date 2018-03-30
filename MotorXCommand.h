@@ -9,8 +9,9 @@ public:
 	using MotorCommand :: MotorCommand;
 
 	void setMotorId();
-
-	virtual bool execute()
+	bool isHoming = false;
+	virtual bool execute();
+	virtual bool executeOld()
 	{
 		
 		SerialPort arduino(XS_arduino_port);
